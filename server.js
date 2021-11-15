@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
 import path from 'path';
-
+import Employees from './routes/employees.js';
 dotenv.config();
 const app = express();
 
@@ -19,7 +19,8 @@ app.use(cors());
 app.use(morgan('tiny'));
 
 // Routes
-app.get('/', (req, res) => res.send('Hello'));
+app.use('/api/employee', Employees);
+app.get('/*', (req, res) => res.send('Page not found'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
