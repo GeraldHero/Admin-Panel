@@ -5,8 +5,13 @@
   "description": "Basically, project to manage companies and their employees. Mini-CRM.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js"
+    "start": "node server.js",
+    "test": "jest --setupFiles dotenv/config --runInBand --detectOpenHandles --watchAll",
+    "dev": "nodemon server.js",
+    "database": "/mongodb/bin/mongod.exe --dbpath=/mongodb-data",
+    "client": "npm start --prefix client",
+    "clientinstall": "npm install --prefix client",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "repository": {
     "type": "git",
@@ -26,9 +31,12 @@
   "homepage": "https://github.com/GeraldHero/Admin-Panel#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "helmet": "^4.6.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.0.12"
+    "mongoose": "^6.0.12",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "dotenv": "^10.0.0",
