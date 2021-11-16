@@ -5,6 +5,8 @@ import cors from 'cors';
 import morgan from 'morgan';
 import path from 'path';
 import Employees from './routes/employees.js';
+import Companies from './routes/companies.js';
+
 dotenv.config();
 const app = express();
 
@@ -15,11 +17,15 @@ connectDB();
 // Middleware
 app.use(express.json({ extended: true }));
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    methods: ['GET', 'POST', 'UPDATE'],
+  })
+);
 app.use(morgan('tiny'));
 
 // Routes
-app.use('/api/employee', Employees);
+app.use('/api/employees', Employees);
 app.get('/*', (req, res) => res.send('Page not found'));
 
 // Serve static assets in production

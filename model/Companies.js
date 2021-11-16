@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+import validator from 'validator';
 const CompaniesSchema = mongoose.Schema({
   name: {
     type: String,

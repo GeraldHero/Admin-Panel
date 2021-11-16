@@ -15,9 +15,8 @@ const EmployeesSchema = mongoose.Schema({
     trim: true,
     unique: true,
   },
-  Company: {
+  company: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
     ref: 'company',
   },
   password: {
@@ -37,6 +36,18 @@ const EmployeesSchema = mongoose.Schema({
     default: false,
   },
 });
+
+EmployeesSchema.methods.toJSON = function () {
+  const user = this;
+  const userObject = user.toObject();
+  delete userObject.password;
+  delete userObject.adminAuthorize;
+  delete userObject.isVerifiedEmail;
+  delete userObject.__v;
+  delete userObject.avatar;
+
+  return userObject;
+};
 
 const Employees = mongoose.model('employee', EmployeesSchema);
 
