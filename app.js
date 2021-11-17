@@ -1,3 +1,4 @@
+// For test purpose only. main nodejs server.js
 import express from 'express';
 import mongoose from 'mongoose';
 import Employees from './routes/employees.js';
