@@ -1,8 +1,7 @@
 import express from 'express';
 import bcryptjs from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import Employees from '../model/Employees.js';
-import { check, param, validationResult } from 'express-validator';
+import { check, validationResult } from 'express-validator';
 const router = express.Router();
 
 // @route   GET api/users/
@@ -19,7 +18,7 @@ router.get('/', async (req, res) => {
 });
 
 // @route POST /api/users
-// @desc  Create User
+// @desc  Create Employee
 // @access Private
 
 router.post(
@@ -52,39 +51,26 @@ router.post(
     }
     const { firstName, lastName, email, phone, password } = req.body;
     try {
-      let user = await Employees.findOne({ email });
-      if (user) {
+      let employee = await Employees.findOne({ email });
+      if (employee) {
         console.log('running');
         return res.status(401).json({ msg: 'Account is already registered!' });
       }
-      user = new Employees({
+      employee = new Employees({
         firstName,
         lastName,
         email,
         phone,
         password,
       });
-
+      // Hash password
       const salt = await bcryptjs.genSaltSync(10);
-      user.password = await bcryptjs.hashSync(password, salt);
+      employee.password = await bcryptjs.hashSync(password, salt);
+      // Generate token in Employees model
+      const token = await employee.generateAuthToken();
 
-      await user.save();
-      console.log(user);
-      const payload = {
-        user: {
-          id: user.id,
-          name: user.name,
-        },
-      };
-      jwt.sign(
-        payload,
-        process.env.JWT_SECRET,
-        { expiresIn: 360000 },
-        (err, token) => {
-          if (err) throw err;
-          return res.status(200).json({ token, user });
-        }
-      );
+      await employee.save();
+      return res.status(200).json({ token, employee });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ msg: error });

@@ -12,6 +12,11 @@ export const dummyTest1 = {
   email: 'gerald_hug92@gmail.com',
   position: 'Admin',
   password: await bcryptjs.hashSync('12345678', salt),
+  token: [
+    {
+      token: jwt.sign({ _id: dummyTestId }, process.env.JWT_SECRET),
+    },
+  ],
 };
 
 export const dummyTest2 = {
@@ -25,9 +30,6 @@ export const dummyTest2 = {
 
 export const setupDB = async () => {
   await User.deleteMany();
-  const salt = await bcrypt.genSalt(10);
-  dummyTest1.password = await bcrypt.hash('123456', salt);
-  dummyTest2.password = await bcrypt.hash('123456', salt);
   await new User(dummyTest1).save();
   await new User(dummyTest2).save();
   // await HorizonUpdates.deleteMany();
