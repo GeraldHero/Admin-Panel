@@ -4,6 +4,11 @@
   "version": "1.0.0",
   "description": "Basically, project to manage companies and their employees. Mini-CRM.",
   "main": "server.js",
+  "typeAcquisition": {
+    "include": [
+      "jest"
+    ]
+  },
   "scripts": {
     "start": "node server.js",
     "test": "jest --runInBand --detectOpenHandles --watchAll",
@@ -12,9 +17,6 @@
     "client": "npm start --prefix client",
     "clientinstall": "npm install --prefix client",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
-  },
-  "jest": {
-    "testEnvironment": "node"
   },
   "repository": {
     "type": "git",
@@ -48,6 +50,11 @@
     "validator": "^13.7.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "@types/jest": "^27.0.2",
+    "babel-jest": "^27.3.1",
     "dotenv": "^10.0.0",
     "nodemon": "^2.0.15",
     "supertest": "^6.1.6"

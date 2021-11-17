@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
 const connectDB = async () => {
-  //const collectionName = 'AdminPanel';
-  const collectionName = 'TestAdminPanel';
+  const collectionName = 'AdminPanel';
+
   try {
     await mongoose.connect(`${process.env.MONGODB_URI}${collectionName}`, {
       useNewUrlParser: true,

@@ -1,9 +1,9 @@
-import mongoose, { mongo } from 'mongoose';
+import mongoose from 'mongoose';
 import bcryptjs from 'bcryptjs';
 import Employee from '../../model/Employees';
-
+import jwt from 'jsonwebtoken';
 const dummyTestId = new mongoose.Types.ObjectId();
-const salt = await bcryptjs.genSaltSync(10);
+const salt = bcryptjs.genSaltSync(10);
 
 export const dummyTest1 = {
   _id: dummyTestId,
@@ -11,8 +11,8 @@ export const dummyTest1 = {
   lastName: 'hug',
   email: 'gerald_hug92@gmail.com',
   position: 'Admin',
-  password: await bcryptjs.hashSync('12345678', salt),
-  token: [
+  password: bcryptjs.hashSync('12345678', salt),
+  tokens: [
     {
       token: jwt.sign({ _id: dummyTestId }, process.env.JWT_SECRET),
     },
@@ -25,13 +25,18 @@ export const dummyTest2 = {
   lastName: 'hug',
   email: 'rion92@gmail.com',
   position: 'Reviewer',
-  password: await bcryptjs.hashSync('12345678', salt),
+  password: bcryptjs.hashSync('12345678', salt),
+  tokens: [
+    {
+      token: jwt.sign({ _id: dummyTestId }, process.env.JWT_SECRET),
+    },
+  ],
 };
 
 export const setupDB = async () => {
-  await User.deleteMany();
-  await new User(dummyTest1).save();
-  await new User(dummyTest2).save();
+  await Employee.deleteMany();
+  await new Employee(dummyTest1).save();
+  await new Employee(dummyTest2).save();
   // await HorizonUpdates.deleteMany();
   // await new HorizonUpdates(dummyTestHUpdate).save();
 };
