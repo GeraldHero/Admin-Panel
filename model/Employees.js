@@ -31,8 +31,9 @@ const EmployeesSchema = mongoose.Schema({
   phone: {
     type: Number,
   },
-  adminAuthorize: {
+  isAdmin: {
     type: Boolean,
+    require: true,
     default: false,
   },
   isVerifiedEmail: {
@@ -69,7 +70,7 @@ EmployeesSchema.methods.toJSON = function () {
   const employee = this;
   const userObject = employee.toObject();
   delete userObject.password;
-  delete userObject.adminAuthorize;
+  delete userObject.isAdmin;
   delete userObject.isVerifiedEmail;
   delete userObject.__v;
   delete userObject.avatar;

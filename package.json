@@ -4,10 +4,8 @@
   "version": "1.0.0",
   "description": "Basically, project to manage companies and their employees. Mini-CRM.",
   "main": "server.js",
-  "typeAcquisition": {
-    "include": [
-      "jest"
-    ]
+  "jest": {
+    "testEnvironment": "node"
   },
   "scripts": {
     "start": "node server.js",
@@ -36,6 +34,7 @@
   "homepage": "https://github.com/GeraldHero/Admin-Panel#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.13.0",

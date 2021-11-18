@@ -1,4 +1,4 @@
-// For test purpose only. main
+// For test purpose only.
 import express from 'express';
 import mongoose from 'mongoose';
 import Employees from './routes/employees.js';
@@ -7,7 +7,7 @@ dotenv.config();
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGOOSE_URI_LOCAL_TEST, {
+    await mongoose.connect(`${process.env.MONGODB_URI}test2`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -20,9 +20,8 @@ const connectDB = async () => {
   }
 };
 connectDB();
-
 const app = express();
-
-app.use(express.json());
+app.use(express.json({ extended: true }));
+app.use('/api/employees', Employees);
 
 export default app;

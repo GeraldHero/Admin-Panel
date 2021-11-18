@@ -70,9 +70,8 @@ router.post(
       const token = await employee.generateAuthToken();
 
       await employee.save();
-      return res.status(200).json({ token, employee });
+      return res.status(201).json({ token, employee });
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ msg: error });
     }
   }
