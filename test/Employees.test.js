@@ -1,6 +1,7 @@
 import request from 'supertest';
 import app from '../app.js';
 import Employees from '../model/Employees.js';
+
 import { setupDB, dummyTest1, dummyTest2 } from './fixtures/db.js';
 
 beforeEach(async () => {
@@ -22,7 +23,7 @@ describe('Users Testing', () => {
       .expect(201);
 
     const result = await Employees.findById(response.body.employee._id);
-    console.log(result);
+    // console.log(result);
     expect(result).not.toBeNull();
     expect(result.password).not.toBe('123456gh');
   });
@@ -48,5 +49,34 @@ describe('Users Testing', () => {
         password: '123456gh',
       })
       .expect(401);
+  });
+
+  it('Should login', async () => {
+    const response = await request(app)
+      .post('/api/auth')
+      .send({
+        email: 'gh@gmail.com',
+        password: '123456gh',
+      })
+      .expect(200);
+  });
+
+  it('Should failed to login - password needed', async () => {
+    const response = await request(app)
+      .post('/api/auth')
+      .send({
+        email: 'gh@gmail.com',
+        password: '',
+      })
+      .expect(422);
+  });
+  it('Should failed to login - Wrong password', async () => {
+    const response = await request(app)
+      .post('/api/auth')
+      .send({
+        email: 'gh@gmail.com',
+        password: 'adsfdsfadfad',
+      })
+      .expect(400);
   });
 });

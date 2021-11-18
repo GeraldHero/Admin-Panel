@@ -30,6 +30,7 @@ const EmployeesSchema = mongoose.Schema({
   },
   phone: {
     type: Number,
+    default: 0,
   },
   isAdmin: {
     type: Boolean,

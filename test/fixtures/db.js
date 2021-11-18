@@ -1,9 +1,7 @@
 import mongoose from 'mongoose';
 import bcryptjs from 'bcryptjs';
-
 import Employee from '../../model/Employees';
-import jwt from 'jsonwebtoken';
-const dummyTestId = new mongoose.Types.ObjectId();
+
 const salt = bcryptjs.genSaltSync(10);
 
 export const dummyTest1 = {
@@ -12,7 +10,7 @@ export const dummyTest1 = {
   email: 'gh@gmail.com',
   phone: parseInt('0941424123'),
   position: 'Admin',
-  password: '123456gh',
+  password: bcryptjs.hashSync('123456gh', salt),
 };
 
 export const dummyTest2 = {
@@ -21,7 +19,7 @@ export const dummyTest2 = {
   phone: parseInt('0941424123'),
   email: 'rh@gmail.com',
   position: 'Reviewer',
-  password: '123456gh',
+  password: bcryptjs.hashSync('123456gh', salt),
 };
 
 export const setupDB = async () => {

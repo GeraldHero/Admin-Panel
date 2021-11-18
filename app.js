@@ -2,6 +2,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import Employees from './routes/employees.js';
+import Auth from './routes/auth.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -23,5 +24,6 @@ connectDB();
 const app = express();
 app.use(express.json({ extended: true }));
 app.use('/api/employees', Employees);
+app.use('/api/auth', Auth);
 
 export default app;

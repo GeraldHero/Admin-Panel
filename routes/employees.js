@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// @route POST /api/users
+// @route POST /api/employees
 // @desc  Create Employee
 // @access Private
 
@@ -33,7 +33,7 @@ router.post(
       .isEmail()
       .notEmpty()
       .normalizeEmail(),
-    // password must be at least 5 chars long
+    // password must be at least 8 chars long
     check('password')
       .trim()
       .escape()
@@ -76,5 +76,4 @@ router.post(
     }
   }
 );
-
 export default router;

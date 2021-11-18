@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import path from 'path';
 import { errorHandler, notFound } from './middleware/errorMiddleware.js';
 import Employees from './routes/employees.js';
+import Auth from './routes/auth.js';
 import Companies from './routes/companies.js';
 import colors from 'colors';
 
@@ -29,6 +30,7 @@ app.use(errorHandler);
 
 // Routes
 app.use('/api/employees', Employees);
+app.use('/api/auth', Auth);
 app.get('/', (req, res) => {
   res.send('Found');
 });
