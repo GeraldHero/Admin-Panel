@@ -47,7 +47,7 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ msg: errors });
+      return res.status(422).json({ msg: errors.errors });
     }
     const { firstName, lastName, email, phone, password } = req.body;
     try {

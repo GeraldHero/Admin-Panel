@@ -16,29 +16,67 @@ describe('Users Testing', () => {
         firstName: 'gerald',
         lastName: 'hug',
         email: 'gerald_hug1730@gmail.com',
-        position: 'Admin',
         phone: parseInt('0941424123'),
         password: '123456gh',
-      })
-      .expect(201);
+      }).expect(201)
+       
+      
 
-    const result = await Employees.findById(response.body.employee._id);
-    // console.log(result);
+   const result = await Employees.findById(response.body.employee._id);
+     
     expect(result).not.toBeNull();
     expect(result.password).not.toBe('123456gh');
   });
-  it('Should Check Error/Incomplete Registry and should Failed', async () => {
-    await request(app)
-      .post('/api/employees')
-      .send({
-        email: 'gerald_hug1730@gmail.com',
-        position: 'Admin',
-        password: '123456',
-      })
-      .expect(422);
+
+  it("email wrong format should failed", async () => {
+   await request(app)
+    .post('/api/employees')
+    .send({
+      firstName: 'gerald',
+      lastName: 'hug',
+      email: 'gerald_hug17.com',
+      phone: '342342342',
+      password: '123456gh',
+    }).expect(422)
+  })
+
+  it('Should Check Error/Incomplete Registry and should Failed',  async () => {
+       
+ await   request(app)
+    .post('/api/employees')
+    .send({
+      firstName: 'gerald',
+      lastName: '',
+      email: 'gerald_hug1730@gmail.com',
+      phone: '342342342',
+      password: '123456gh',
+    }).expect(422)
+ 
+  await  request(app)
+    .post('/api/employees')
+    .send({
+      firstName: 'Gerald',
+      lastName: 'hug',
+      email: 'gerald_hug1730@gmail.com',
+      phone: ' ',
+      password: '123456gh',
+    }).expect(422)
+
+ await   request(app)
+    .post('/api/employees')
+    .send({
+      firstName: 'gerald',
+      lastName: 'Hug',
+      email: 'gerald_hug1730@gmail.com',
+      phone: '342342342',
+      password: ' ',
+    }).expect(422)
+
+
   });
-  it('Should Check dupplicate register', async () => {
-    const response = await request(app)
+
+  it('Should Check dupplicate register',  async () => {
+  await  request(app)
       .post('/api/employees')
       .send({
         firstName: 'gerald',
@@ -48,35 +86,43 @@ describe('Users Testing', () => {
         position: 'Admin',
         password: '123456gh',
       })
-      .expect(401);
+      .expect(401, { msg: 'Account is already registered!' });
   });
 
   it('Should login', async () => {
-    const response = await request(app)
+   await  request(app)
       .post('/api/auth')
       .send({
         email: 'gh@gmail.com',
         password: '123456gh',
-      })
-      .expect(200);
+      }).expect(200 );
   });
 
-  it('Should failed to login - password needed', async () => {
-    const response = await request(app)
+  it('Should failed to login - password needed', async  () => {
+  await  request(app)
       .post('/api/auth')
       .send({
         email: 'gh@gmail.com',
         password: '',
-      })
-      .expect(422);
+      }).expect(422);
   });
-  it('Should failed to login - Wrong password', async () => {
-    const response = await request(app)
+
+  it('Should failed login no user', async ()=> {
+   await request(app)
+    .post('/api/auth')
+    .send({
+      email: 'gh34@gmail.com',
+      password: '12345678',
+    }).expect(400,{"msg":"Invalid Credential"}) ;
+  })
+
+  it('Should failed to login - Wrong password', async  () => {
+    await request(app)
       .post('/api/auth')
       .send({
         email: 'gh@gmail.com',
         password: 'adsfdsfadfad',
-      })
-      .expect(400);
+      }).expect(400, {"msg":"Invalid Credential"});
+
   });
 });

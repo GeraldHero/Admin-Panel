@@ -13,7 +13,7 @@ import colors from 'colors';
 dotenv.config();
 const app = express();
 
-const PORT = 5000 || process.env.PORT;
+const PORT = process.env.PORT;
 // database
 import connectDB from './db/database.js';
 connectDB();
