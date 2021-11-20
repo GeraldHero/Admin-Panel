@@ -42,7 +42,7 @@ router.post(
       const token = await employee.generateAuthToken();
       return res.status(200).json({ token });
     } catch (error) {
-      console.log(error);
+      
       return res.status(500).json({ msg: 'Server error!' });
     }
   }
@@ -64,7 +64,7 @@ try {
 
  return res.send('Logout succesfully!')
 } catch (error) {
-  console.log(error)
+   
   return   res.status(500).send({ msg: error})
 }
 
@@ -82,7 +82,7 @@ router.post('/logoutAll', auth, async (req, res) => {
      await req.user.save()
    return res.send('All device succesfully logout!')
   } catch (error) {
-    console.log(error)
+    
     return   res.status(500).send({ msg: error})
   }
   

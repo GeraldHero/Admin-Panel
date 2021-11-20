@@ -8,7 +8,30 @@ beforeEach(async () => {
   await setupDB();
 });
 
+describe('Route Testing', () => {
+it("Should failed - no route",async () => {
+
+  await request(app)
+  .get('/noRoute')
+  .expect(404)
+
+  await request(app)
+  .post('/noRoute')
+  .expect(404)
+
+  await request(app)
+  .patch('/noRoute')
+  .expect(404)
+
+  await request(app)
+  .delete('/noRoute')
+  .expect(404 )
+})
+
+})
+
 describe('Users Testing', () => {
+
   it('Should Register an account', async () => {
     const response = await request(app)
       .post('/api/employees')
@@ -20,8 +43,7 @@ describe('Users Testing', () => {
         password: '123456gh',
       }).expect(201)
        
-      
-
+    
    const result = await Employees.findById(response.body.employee._id);
      
     expect(result).not.toBeNull();
@@ -89,40 +111,62 @@ describe('Users Testing', () => {
       .expect(401, { msg: 'Account is already registered!' });
   });
 
-  it('Should login', async () => {
-   await  request(app)
-      .post('/api/auth')
-      .send({
-        email: 'gh@gmail.com',
-        password: '123456gh',
-      }).expect(200 );
-  });
 
-  it('Should failed to login - password needed', async  () => {
-  await  request(app)
-      .post('/api/auth')
-      .send({
-        email: 'gh@gmail.com',
-        password: '',
-      }).expect(422);
-  });
-
-  it('Should failed login no user', async ()=> {
-   await request(app)
-    .post('/api/auth')
-    .send({
-      email: 'gh34@gmail.com',
-      password: '12345678',
-    }).expect(400,{"msg":"Invalid Credential"}) ;
+  it('Should Delete User', async () => {
+   
+    await request(app)
+    .delete('/api/employees/'+dummyTest1._id.toString()).set({
+      'x-auth-token': dummyTest1.tokens[0].token,
+    })
+     .expect(200, {msg: "Deleted Successfully!"});
   })
 
-  it('Should failed to login - Wrong password', async  () => {
+  it('Not found in Delete User', async () => {
+   
     await request(app)
-      .post('/api/auth')
-      .send({
-        email: 'gh@gmail.com',
-        password: 'adsfdsfadfad',
-      }).expect(400, {"msg":"Invalid Credential"});
+    .delete('/api/employees/6198b2b0b961a9b4447e2496').set({
+      'x-auth-token': dummyTest1.tokens[0].token,
+    })
+     .expect(404, {msg: "User not found!"});
+  })
 
-  });
 });
+
+
+describe('Login Testing', () => {
+it('Should login', async () => {
+  await  request(app)
+     .post('/api/auth')
+     .send({
+       email: 'gh@gmail.com',
+       password: '123456gh',
+     }).expect(200 );
+ });
+
+ it('Should failed to login - password needed', async  () => {
+ await  request(app)
+     .post('/api/auth')
+     .send({
+       email: 'gh@gmail.com',
+       password: '',
+     }).expect(422);
+ });
+
+ it('Should failed login no user', async ()=> {
+  await request(app)
+   .post('/api/auth')
+   .send({
+     email: 'gh34@gmail.com',
+     password: '12345678',
+   }).expect(400,{"msg":"Invalid Credential"}) ;
+ })
+
+ it('Should failed to login - Wrong password', async  () => {
+   await request(app)
+     .post('/api/auth')
+     .send({
+       email: 'gh@gmail.com',
+       password: 'adsfdsfadfad',
+     }).expect(400, {"msg":"Invalid Credential"});
+    })
+  });
