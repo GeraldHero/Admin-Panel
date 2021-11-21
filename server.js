@@ -29,8 +29,10 @@ app.use(morgan('tiny'));
 app.use(errorHandler);
 
 // Routes
-app.use('/api/employees', Employees);
+
 app.use('/api/auth', Auth);
+app.use('/api/employees', Employees);
+app.use('/api/companies', Companies);
 app.get('/', (req, res) => {
   res.send('Found');
 });

@@ -5,20 +5,20 @@ import auth from '../middleware/auth.js'
 import { check, validationResult } from 'express-validator';
 const router = express.Router();
 
-// @route   GET api/users/
+// @route   GET api/employees/
 // @desc    Get All User Data
 // @access  Private
 
 router.get('/', auth, async (req, res) => {
   try {
     const Employee = await Employees.find();
-    return res.status(200).json(Employee);
+    return res.status(200).send(Employee);
   } catch (error) {
-    return res.status(500).json({ msg: 'Something went wrong :(' });
+    return res.status(500).send({ msg: 'Something went wrong :(' });
   }
 });
 
-// @route   GET api/users/:id
+// @route   GET api/employees/:id
 // @desc    Get Specific User Data
 // @access  Private
 
@@ -41,9 +41,9 @@ router.post(
   '/',
   [
     //check firstname
-    check('firstName', 'Firstname is required').not().isEmpty().trim().escape(),
+    check('firstName', 'First name is required').not().isEmpty().trim().escape(),
     // check lname
-    check('lastName', 'Last Name is required').not().isEmpty().trim().escape(),
+    check('lastName', 'Last name is required').not().isEmpty().trim().escape(),
     // username must be an email
     check('email', 'Please insert a valid email address')
       .isEmail()
@@ -68,10 +68,8 @@ router.post(
     const { firstName, lastName, email, phone, password } = req.body;
     try {
       let employee = await Employees.findOne({ email });
-      if (employee) {
-        
-        return res.status(401).json({ msg: 'Account is already registered!' });
-      }
+      if (employee) res.status(401).json({ msg: 'Account is already registered!' });
+      
       employee = new Employees({
         firstName,
         lastName,

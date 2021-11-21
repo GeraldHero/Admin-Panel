@@ -3,6 +3,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import Employees from './routes/employees.js';
 import Auth from './routes/auth.js';
+import Companies from './routes/Companies.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -25,5 +26,8 @@ const app = express();
 app.use(express.json({ extended: true }));
 app.use('/api/employees', Employees);
 app.use('/api/auth', Auth);
-
+app.use('/api/companies', Companies);
+app.use('/*', (req, res) => {
+  res.statut
+})
 export default app;

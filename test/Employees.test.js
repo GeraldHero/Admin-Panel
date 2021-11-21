@@ -25,9 +25,13 @@ it("Should failed - no route",async () => {
 
   await request(app)
   .delete('/noRoute')
-  .expect(404 )
+  .expect(404)
 })
-
+it("Should failed - no token/not login", async () => {
+  await request(app)
+      .get('/api/employees')
+      .expect(401, { msg: 'Not authorized!' })
+})
 })
 
 describe('Users Testing', () => {
@@ -97,6 +101,28 @@ describe('Users Testing', () => {
 
   });
 
+  it('Should Update an account', async () => {
+    const response = await request(app)
+      .patch(`/api/employees/${dummyTest1._id.toString()}`).set({
+        'x-auth-token': dummyTest1.tokens[0].token,
+      })
+      .send({
+        firstName: 'John',
+        lastName: 'Smith',
+        email: 'gh@gmail.com',
+        phone: 941424123,
+        password: 'gh654321',
+      }).expect(200)
+       
+   const result = await Employees.findById(dummyTest1._id.toString());
+    expect(result.firstName).toBe('John')
+    expect(result.lastName).toBe('Smith')
+    expect(result.email).toBe('gh@gmail.com')
+    expect(result.phone).toBe(941424123);
+    expect(result.password).not.toBe('gh654321'); 
+      
+  });
+
   it('Should Check dupplicate register',  async () => {
   await  request(app)
       .post('/api/employees')
@@ -115,7 +141,7 @@ describe('Users Testing', () => {
   it('Should Delete User', async () => {
    
     await request(app)
-    .delete('/api/employees/'+dummyTest1._id.toString()).set({
+    .delete(`/api/employees/${dummyTest1._id.toString()}`).set({
       'x-auth-token': dummyTest1.tokens[0].token,
     })
      .expect(200, {msg: "Deleted Successfully!"});
