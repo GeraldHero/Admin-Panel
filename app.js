@@ -1,19 +1,20 @@
 // For test purpose only.
 import express from 'express';
 import mongoose from 'mongoose';
-import Employees from './routes/employees.js';
-import Auth from './routes/auth.js';
-import Companies from './routes/Companies.js';
+import Employees from './routes/employeesRoute.js';
+import Auth from './routes/authRoute.js';
+import Companies from './routes/companiesRoute.js';
+import { errorHandler, notFound } from './middleware/errorMiddleware';
 import dotenv from 'dotenv';
 dotenv.config();
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(`${process.env.MONGODB_URI_LOCAL}test2`, {
+    const conn = await mongoose.connect(process.env.MONGODB_URI_lOCAL_TEST, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log('Connected to database');
+    // console.log(`MongoDB connected to host ${conn.connection.host}`);
   } catch (error) {
     if (error) {
       console.log(error);
@@ -24,10 +25,10 @@ const connectDB = async () => {
 connectDB();
 const app = express();
 app.use(express.json({ extended: true }));
+app.use(errorHandler);
 app.use('/api/employees', Employees);
 app.use('/api/auth', Auth);
 app.use('/api/companies', Companies);
-app.use('/*', (req, res) => {
-  res.statut
-})
+app.use(notFound);
+
 export default app;

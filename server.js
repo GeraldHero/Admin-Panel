@@ -5,9 +5,9 @@ import cors from 'cors';
 import morgan from 'morgan';
 import path from 'path';
 import { errorHandler, notFound } from './middleware/errorMiddleware.js';
-import Employees from './routes/employees.js';
-import Auth from './routes/auth.js';
-import Companies from './routes/companies.js';
+import Employees from './routes/employeesRoute.js';
+import Auth from './routes/authRoute.js';
+import Companies from './routes/companiesRoute.js';
 import colors from 'colors';
 
 dotenv.config();

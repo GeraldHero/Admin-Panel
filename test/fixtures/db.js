@@ -1,30 +1,30 @@
 import mongoose from 'mongoose';
-import bcryptjs from 'bcryptjs';
 import Employee from '../../model/Employees';
-import jwt from 'jsonwebtoken'
-const salt = bcryptjs.genSaltSync(10);
+import jwt from 'jsonwebtoken';
+
 const dummyTest1Id = new mongoose.Types.ObjectId();
 export const dummyTest1 = {
-  _id:dummyTest1Id,
+  _id: dummyTest1Id,
   firstName: 'gerald',
   lastName: 'hug',
   email: 'gh@gmail.com',
   phone: parseInt('0941424123'),
   position: 'Admin',
-  password: bcryptjs.hashSync('123456gh', salt),
-  tokens: [{
-token: jwt.sign({ id: dummyTest1Id}, process.env.JWT_SECRET)
-  }]
+  password: '123456gh',
+  tokens: [
+    {
+      token: jwt.sign({ id: dummyTest1Id }, process.env.JWT_SECRET),
+    },
+  ],
 };
 
 export const dummyTest2 = {
-   
   firstName: 'rion',
   lastName: 'hug',
   phone: parseInt('0941424123'),
   email: 'rh@gmail.com',
   position: 'Reviewer',
-  password: bcryptjs.hashSync('123456gh', salt),
+  password: '123456gh',
 };
 
 export const setupDB = async () => {

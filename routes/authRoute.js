@@ -2,7 +2,7 @@ import express from 'express';
 import bcryptjs from 'bcryptjs';
 import Employees from '../model/Employees.js';
 import { check, validationResult } from 'express-validator';
- import auth from '../middleware/auth.js'
+import auth from '../middleware/auth.js';
 const router = express.Router();
 
 // @route   POST /api/auth
@@ -42,34 +42,29 @@ router.post(
       const token = await employee.generateAuthToken();
       return res.status(200).json({ token });
     } catch (error) {
-      
       return res.status(500).json({ msg: 'Server error!' });
     }
   }
 );
- 
+
 // @route   POST /api/auth/logout
 // @desc    Logout User
 // @access  Private
 
 router.post('/logout', auth, async (req, res) => {
-try {
- 
-  req.user.tokens =  req.user.tokens.filter((token) => {
-    return token.token !== req.token
-  })
+  try {
+    req.user.tokens = req.user.tokens.filter((token) => {
+      return token.token !== req.token;
+    });
 
- // console.log(req.user.tokens)
-   await req.user.save()
+    // console.log(req.user.tokens)
+    await req.user.save();
 
- return res.send('Logout succesfully!')
-} catch (error) {
-   
-  return   res.status(500).send({ msg: error})
-}
-
-})
-
+    return res.send('Logout succesfully!');
+  } catch (error) {
+    return res.status(500).send({ msg: error });
+  }
+});
 
 // @route   POST /api/auth/logout
 // @desc    Logout all device session
@@ -77,15 +72,12 @@ try {
 
 router.post('/logoutAll', auth, async (req, res) => {
   try {
-   
-    req.user.tokens =  []
-     await req.user.save()
-   return res.send('All device succesfully logout!')
+    req.user.tokens = [];
+    await req.user.save();
+    return res.send('All device succesfully logout!');
   } catch (error) {
-    
-    return   res.status(500).send({ msg: error})
+    return res.status(500).send({ msg: error });
   }
-  
-  })
+});
 
 export default router;

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import platform from 'platform';
+import bcryptjs from 'bcryptjs';
 
 const EmployeesSchema = mongoose.Schema({
   firstName: {
@@ -53,6 +54,15 @@ const EmployeesSchema = mongoose.Schema({
       },
     },
   ],
+});
+//hash password
+EmployeesSchema.pre('save', async function (next) {
+  const employee = this;
+  const salt = await bcryptjs.genSaltSync(10);
+  if (employee.isModified('password'))
+    employee.password = await bcryptjs.hashSync(employee.password, salt);
+
+  next();
 });
 
 // Generate JWT Token and detect platform
