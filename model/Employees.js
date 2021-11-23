@@ -55,6 +55,7 @@ const EmployeesSchema = mongoose.Schema({
       usedPlatform: {
         type: String,
         require: true,
+        default: 'Not detected',
       },
     },
   ],
@@ -73,7 +74,7 @@ EmployeesSchema.pre('save', async function (next) {
 EmployeesSchema.methods.generateAuthToken = async function () {
   const employee = this;
   const token = jwt.sign({ id: employee.id }, process.env.JWT_SECRET);
-  const usedPlatform = platform.description || 'not detected';
+  const usedPlatform = platform.description;
 
   employee.tokens = employee.tokens.concat({ token, usedPlatform });
   await employee.save();

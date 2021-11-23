@@ -9,6 +9,15 @@ beforeEach(async () => {
 });
 
 describe('Route Testing', () => {
+  it('Should get employee - token is authorized', async () => {
+    await request(app)
+      .get('/api/employees')
+      .set({
+        Authorization: `Bearer ${dummyTest1.tokens[0].token}`,
+      })
+      .expect(200);
+  });
+
   it('Should failed - no route', async () => {
     await request(app).get('/noRoute').expect(404, { msg: 'Page not Found' });
   });
@@ -16,6 +25,15 @@ describe('Route Testing', () => {
   it('Should failed - no token/not login', async () => {
     await request(app)
       .get('/api/employees')
+      .expect(401, { msg: 'Not authorized!' });
+  });
+
+  it('Should failed - token is unauthorized', async () => {
+    await request(app)
+      .get('/api/employees')
+      .set({
+        Authorization: `Bearer 21231231`,
+      })
       .expect(401, { msg: 'Not authorized!' });
   });
 });
@@ -91,7 +109,7 @@ describe('Users Testing', () => {
     const response = await request(app)
       .patch(`/api/employees/${dummyTest1._id.toString()}`)
       .set({
-        'x-auth-token': dummyTest1.tokens[0].token,
+        Authorization: `Bearer ${dummyTest1.tokens[0].token}`,
       })
       .send({
         firstName: 'John',
@@ -128,7 +146,7 @@ describe('Users Testing', () => {
     await request(app)
       .delete(`/api/employees/${dummyTest1._id.toString()}`)
       .set({
-        'x-auth-token': dummyTest1.tokens[0].token,
+        Authorization: `Bearer ${dummyTest1.tokens[0].token}`,
       })
       .expect(200, { msg: 'Deleted Successfully!' });
   });
@@ -137,7 +155,7 @@ describe('Users Testing', () => {
     await request(app)
       .delete('/api/employees/6198b2b0b961a9b4447e2496')
       .set({
-        'x-auth-token': dummyTest1.tokens[0].token,
+        Authorization: `Bearer ${dummyTest1.tokens[0].token}`,
       })
       .expect(404, { msg: 'User not found!' });
   });

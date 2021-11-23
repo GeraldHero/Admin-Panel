@@ -16,6 +16,7 @@ const CompaniesSchema = mongoose.Schema({
   website: {
     type: String,
   },
+  Employees: [{ type: mongoose.Schema.Types.ObjectId, ref: 'employee' }],
 });
 
 const Companies = mongoose.model('company', CompaniesSchema);
