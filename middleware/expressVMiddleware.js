@@ -36,6 +36,20 @@ const loginRequestCheckerArray = [
     .escape(),
 ];
 
+const companyRequestCheckerArray = [
+  check('name', 'Please insert your company name!')
+    .not()
+    .isEmpty()
+    .trim()
+    .escape(),
+  check('email', 'Please insert a valid email address')
+    .isEmail()
+    .notEmpty()
+    .normalizeEmail(),
+  check('logo'),
+  check('website'),
+];
+
 function validateResult(req, res, next) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -47,5 +61,6 @@ function validateResult(req, res, next) {
 export {
   loginRequestCheckerArray,
   registerRequestCheckerArray,
+  companyRequestCheckerArray,
   validateResult,
 };
