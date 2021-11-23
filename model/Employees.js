@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import platform from 'platform';
 import bcryptjs from 'bcryptjs';
-
+import validator from 'validator';
 const EmployeesSchema = mongoose.Schema({
   firstName: {
     type: String,
@@ -19,6 +19,9 @@ const EmployeesSchema = mongoose.Schema({
     require: [true, 'Please enter your email'],
     trim: true,
     unique: true,
+    validate(value) {
+      if (!validator.isEmail(value)) throw new Error('Invalid Email');
+    },
   },
   company: {
     type: mongoose.Schema.Types.ObjectId,
@@ -26,6 +29,7 @@ const EmployeesSchema = mongoose.Schema({
   },
   password: {
     type: String,
+    minLength: 8,
     require: [true, 'Please enter a password'],
     trim: true,
   },

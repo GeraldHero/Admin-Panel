@@ -1,7 +1,5 @@
 import bcryptjs from 'bcryptjs';
-import { check, validationResult } from 'express-validator';
 import Employees from '../model/Employees.js';
-import auth from '../middleware/auth.js';
 
 // @route   POST /api/auth
 // @desc    Auth/Login user and get token
@@ -28,3 +26,32 @@ export const loginUser = async (req, res) => {
 // @route   POST /api/auth/logout
 // @desc    Logout User
 // @access  Private
+
+export const logoutUser = async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter((token) => {
+      return token.token !== req.token;
+    });
+
+    // console.log(req.user.tokens)
+    await req.user.save();
+
+    return res.send('Logout succesfully!');
+  } catch (error) {
+    return res.status(500).send({ msg: error });
+  }
+};
+
+// @route   POST /api/auth/logout
+// @desc    Logout all device session
+// @access  Private
+
+export const logoutAllUser = async (req, res) => {
+  try {
+    req.user.tokens = [];
+    await req.user.save();
+    return res.send('All device succesfully logout!');
+  } catch (error) {
+    return res.status(500).send({ msg: error });
+  }
+};
