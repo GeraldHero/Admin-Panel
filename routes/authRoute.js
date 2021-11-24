@@ -1,5 +1,5 @@
+/* eslint-disable import/extensions */
 import express from 'express';
-import { check } from 'express-validator';
 import auth from '../middleware/auth.js';
 import {
   loginRequestCheckerArray,

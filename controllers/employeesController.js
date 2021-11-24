@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/extensions
 import Employees from '../model/Employees.js';
 
 // @route   GET api/employees/
@@ -35,8 +36,9 @@ export const createEmployee = async (req, res) => {
   const { firstName, lastName, email, phone, password } = req.body;
   try {
     let employee = await Employees.findOne({ email });
-    if (employee)
+    if (employee) {
       res.status(401).json({ msg: 'Account is already registered!' });
+    }
 
     employee = new Employees({
       firstName,
@@ -83,6 +85,7 @@ export const editEmployee = async (req, res) => {
     if (!employee) {
       throw new Error('No user found');
     }
+    // eslint-disable-next-line no-return-assign
     updates.forEach((update) => (employee[update] = req.body[update]));
 
     await employee.save();

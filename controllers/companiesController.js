@@ -1,6 +1,6 @@
+/* eslint-disable import/extensions */
 import Companies from '../model/Companies.js';
-import sharp from 'sharp';
-import multer from 'multer';
+
 // @route   GET api/companies
 // @desc    Get All Companies Data
 // @access  Private
@@ -33,13 +33,14 @@ export const getSpecificCompany = async (req, res) => {
 // @access Private
 
 export const createCompanyData = async (req, res) => {
-  console.log(req.file);
   const { name, logo, email, website } = req.body;
 
   try {
     let company = await Companies.findOne({ name });
-    if (company)
+    if (company) {
       res.status(401).json({ msg: 'Company name is already registered!' });
+    }
+
     company = new Companies({
       name,
       logo,
@@ -48,6 +49,6 @@ export const createCompanyData = async (req, res) => {
     });
     await company.save();
   } catch (error) {
-    console.log(error);
+    res.status(500).send('Server Error');
   }
 };

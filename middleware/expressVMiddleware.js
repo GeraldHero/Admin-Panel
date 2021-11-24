@@ -1,7 +1,7 @@
 import { check, validationResult } from 'express-validator';
 
 const registerRequestCheckerArray = [
-  //check firstname
+  // check firstname
   check('firstName', 'Firstname is required').not().isEmpty().trim().escape(),
   // check lname
   check('lastName', 'Last Name is required').not().isEmpty().trim().escape(),
@@ -55,7 +55,7 @@ function validateResult(req, res, next) {
   if (!errors.isEmpty()) {
     return res.status(422).json({ msg: errors });
   }
-  next();
+  return next();
 }
 
 export {

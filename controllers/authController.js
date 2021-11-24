@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import bcryptjs from 'bcryptjs';
 import Employees from '../model/Employees.js';
 
@@ -10,8 +11,9 @@ export const loginUser = async (req, res) => {
   try {
     // find Employee
     const employee = await Employees.findOne({ email });
-    if (employee === null)
+    if (employee === null) {
       return res.status(400).json({ msg: 'Invalid Credential' });
+    }
 
     const isMatch = await bcryptjs.compareSync(password, employee.password);
     if (!isMatch) return res.status(400).json({ msg: 'Invalid Credential' });
@@ -29,9 +31,10 @@ export const loginUser = async (req, res) => {
 
 export const logoutUser = async (req, res) => {
   try {
-    req.user.tokens = req.user.tokens.filter((token) => {
-      return token.token !== req.token;
-    });
+    req.user.tokens = req.user.tokens.filter(
+      // eslint-disable-next-line comma-dangle
+      (token) => token.token !== req.token
+    );
 
     // console.log(req.user.tokens)
     await req.user.save();

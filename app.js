@@ -1,7 +1,6 @@
-// For test purpose only.
-import express from 'express';
+import express from 'express/index';
 import mongoose from 'mongoose';
-import Employees from './routes/employeesRoute.js';
+import Employees from './routes/EmployeesRoute.js';
 import Auth from './routes/authRoute.js';
 import Companies from './routes/companiesRoute.js';
 import { errorHandler, notFound } from './middleware/errorMiddleware';
@@ -25,10 +24,10 @@ const connectDB = async () => {
 connectDB();
 const app = express();
 app.use(express.json({ extended: true }));
-app.use(errorHandler);
 app.use('/api/employees', Employees);
 app.use('/api/auth', Auth);
 app.use('/api/companies', Companies);
 app.use(notFound);
+app.use(errorHandler);
 
 export default app;

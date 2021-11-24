@@ -14,7 +14,8 @@
     "database": "/mongodb/bin/mongod.exe --dbpath=/mongodb-data",
     "client": "npm start --prefix client",
     "clientinstall": "npm install --prefix client",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
+    "lint": "eslint ./"
   },
   "repository": {
     "type": "git",
@@ -55,7 +56,17 @@
     "@types/jest": "^27.0.2",
     "babel-jest": "^27.3.1",
     "dotenv": "^10.0.0",
+    "eslint": "^8.3.0",
+    "eslint-config-airbnb": "^19.0.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.27.1",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "nodemon": "^2.0.15",
+    "prettier": "^2.4.1",
     "supertest": "^6.1.6"
   }
 }
