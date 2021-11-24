@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
-import Employee from '../../model/Employees';
 import jwt from 'jsonwebtoken';
+import Companies from '../../model/Companies';
+import Employees from '../../model/Employees';
 
 const dummyTest1Id = new mongoose.Types.ObjectId();
 export const dummyTest1 = {
@@ -27,12 +28,20 @@ export const dummyTest2 = {
   password: '123456gh',
 };
 
-export const setupDB = async () => {
-  await Employee.deleteMany();
-  await new Employee(dummyTest1).save();
-  await new Employee(dummyTest2).save();
-  // await HorizonUpdates.deleteMany();
-  // await new HorizonUpdates(dummyTestHUpdate).save();
+export const companyDummy1 = {
+  _id: dummyTest1Id,
+  name: 'gerald inc',
+  logo: {
+    path: '/logo/image/123.jpg',
+    filename: '123.jpg',
+  },
+  website: 'gerald.com',
 };
 
-// export { dummyTest1, dummyTest2, setupDB };
+export const setupDB = async () => {
+  await Employees.deleteMany();
+  await Companies.deleteMany();
+  await new Employees(dummyTest1).save();
+  await new Employees(dummyTest2).save();
+  await new Companies(companyDummy1).save();
+};
