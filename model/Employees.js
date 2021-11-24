@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import platform from 'platform';
 import bcryptjs from 'bcryptjs';
+/* eslint import/newline-after-import: "off" */
 import validator from 'validator';
 const EmployeesSchema = mongoose.Schema({
   firstName: {
@@ -60,7 +61,7 @@ const EmployeesSchema = mongoose.Schema({
     },
   ],
 });
-//hash password
+// hash password
 EmployeesSchema.pre('save', async function (next) {
   const employee = this;
   const salt = await bcryptjs.genSaltSync(10);
@@ -88,6 +89,7 @@ EmployeesSchema.methods.toJSON = function () {
   delete userObject.password;
   delete userObject.isAdmin;
   delete userObject.isVerifiedEmail;
+  // eslint-disable-next-line no-underscore-dangle
   delete userObject.__v;
   delete userObject.avatar;
   delete userObject.tokens;

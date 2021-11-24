@@ -1,5 +1,8 @@
+/* eslint-disable import/extensions */
+/* eslint import/newline-after-import: "off" */
 import jwt from 'jsonwebtoken';
 import Employees from '../model/Employees.js';
+
 export default async function (req, res, next) {
   try {
     // Get token from header
@@ -18,7 +21,7 @@ export default async function (req, res, next) {
     // If authorize data will inherit
     req.token = token;
     req.user = employee;
-    next();
+    return next();
   } catch (error) {
     return res.status(401).json({ msg: 'Not authorized!' });
   }

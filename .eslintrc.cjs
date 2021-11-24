@@ -17,6 +17,7 @@ module.exports = {
   rules: {
     'linebreak-style': 0,
     'comma-dangle': 1,
+
     'prettier/prettier': [
       'error',
       {

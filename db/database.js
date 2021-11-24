@@ -1,3 +1,4 @@
+/* eslint import/newline-after-import: "off" */
 import mongoose from 'mongoose';
 
 const connectDB = async () => {
