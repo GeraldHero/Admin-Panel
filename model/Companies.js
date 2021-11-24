@@ -12,7 +12,8 @@ const CompaniesSchema = mongoose.Schema({
     trim: true,
   },
   logo: {
-    type: Buffer,
+    path: String,
+    filename: String,
   },
   website: {
     type: String,
