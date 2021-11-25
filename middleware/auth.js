@@ -21,6 +21,7 @@ export default async function (req, res, next) {
     // If authorize data will inherit
     req.token = token;
     req.user = employee;
+   
     return next();
   } catch (error) {
     return res.status(401).json({ msg: 'Not authorized!' });

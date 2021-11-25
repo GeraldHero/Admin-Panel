@@ -82,6 +82,7 @@ export const deleteCompany = async (req, res) => {
 
     return res.status(200).send({ msg: 'Deleted Successfully!' });
   } catch (error) {
+    console.log(error)
     return res.status(500).send('Server Error!');
   }
 };
