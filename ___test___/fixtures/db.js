@@ -10,7 +10,7 @@ export const dummyTest1 = {
   lastName: 'hug',
   email: 'gh@gmail.com',
   phone: parseInt('0941424123'),
-  position: 'Admin',
+  isAdmin: true,
   password: '123456gh',
   tokens: [
     {
@@ -26,6 +26,12 @@ export const dummyTest2 = {
   email: 'rh@gmail.com',
   position: 'Reviewer',
   password: '123456gh',
+  isAdmin: false,
+  tokens: [
+    {
+      token: jwt.sign({ id: "SampleId" }, process.env.JWT_SECRET),
+    },
+  ],
 };
 
 export const companyDummy1 = {

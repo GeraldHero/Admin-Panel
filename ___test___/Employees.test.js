@@ -106,7 +106,7 @@ describe('Users Testing', () => {
   });
 
   it('Should Update an account', async () => {
-    const response = await request(app)
+     await request(app)
       .patch(`/api/employees/${dummyTest1._id.toString()}`)
       .set({
         Authorization: `Bearer ${dummyTest1.tokens[0].token}`,
@@ -151,13 +151,22 @@ describe('Users Testing', () => {
       .expect(200, { msg: 'Deleted Successfully!' });
   });
 
-  it('Shoul failed - User not found!', async () => {
+  it('Should failed - User not found!', async () => {
     await request(app)
       .delete('/api/employees/6198b2b0b961a9b4447e2496')
       .set({
         Authorization: `Bearer ${dummyTest1.tokens[0].token}`,
       })
       .expect(404, { msg: 'User not found!' });
+  });
+
+  it('Should failed - Not admin deletion', async () => {
+    await request(app)
+      .delete(`/api/employees/${dummyTest1._id.toString()}`)
+      .set({
+        Authorization: `Bearer ${dummyTest2.tokens[0].token}`,
+      })
+      .expect(401, { msg: 'Not authorized!' });
   });
 });
 

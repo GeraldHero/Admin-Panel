@@ -41,7 +41,7 @@ const deleteFile = (path) => {
 
 export const createCompanyData = async (req, res) => {
   const { name, email, website } = req.body;
-
+ 
   const { path, filename } = req.file;
   // remove .jpg - filename.replace(/\.[^/.]+$/, '')
   try {

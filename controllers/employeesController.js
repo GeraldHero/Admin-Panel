@@ -1,6 +1,5 @@
 // eslint-disable-next-line import/extensions
 import Employees from '../model/Employees.js';
-
 // @route   GET api/employees/
 // @desc    Get All User Data
 // @access  Private
@@ -33,9 +32,11 @@ export const getSpecificUser = async (req, res) => {
 // @access Private
 
 export const createEmployee = async (req, res) => {
-  const { firstName, lastName, email, phone, password } = req.body;
+  const { firstName, lastName, email, phone, password, company } = req.body;
+
   try {
     let employee = await Employees.findOne({ email });
+
     if (employee) {
       res.status(401).json({ msg: 'Account is already registered!' });
     }
@@ -46,6 +47,7 @@ export const createEmployee = async (req, res) => {
       email,
       phone,
       password,
+      company,
     });
 
     // Generate token in Employees model

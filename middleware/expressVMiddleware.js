@@ -46,7 +46,6 @@ const companyRequestCheckerArray = [
     .isEmail()
     .notEmpty()
     .normalizeEmail(),
-  check('logo'),
   check('website'),
 ];
 
