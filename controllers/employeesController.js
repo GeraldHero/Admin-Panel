@@ -35,9 +35,9 @@ const checkCompany = async (company) => {
     result = await new Companies({
       name: company.cname,
       email: company.cemail,
-      logo: { path: 'none', filename: 'none' },
       website: company.website,
     });
+
     result.save();
   }
   return result;
