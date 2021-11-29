@@ -1,6 +1,5 @@
 import request from 'supertest';
 import app from '../app.js';
-import Companies from '../model/Companies.js';
 
 import { setupDB, dummyTest1, companyDummy1 } from './fixtures/db.js';
 
@@ -31,4 +30,20 @@ describe('Company Testing', () => {
       })
       .expect(200);
   });
+
+
+  it('Should register a new company', async () => {
+      
+  
+    await request(app)
+    .post('/api/companies')
+    .set("Authorization",  `Bearer ${dummyTest1.tokens[0].token}`)
+    .field("name", "test inc")
+    .field("email", "test@inc.com")
+    .field("website", "test.com")
+    .attach('Logo', 'test/fixtures/Picture.png')
+    .expect(201)
+   
+
+  })
 });

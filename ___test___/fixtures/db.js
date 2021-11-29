@@ -29,7 +29,7 @@ export const dummyTest2 = {
   isAdmin: false,
   tokens: [
     {
-      token: jwt.sign({ id: "SampleId" }, process.env.JWT_SECRET),
+      token: jwt.sign({ id: "SampleId2" }, process.env.JWT_SECRET),
     },
   ],
 };

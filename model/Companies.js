@@ -13,12 +13,10 @@ const CompaniesSchema = mongoose.Schema({
   logo: {
     path: String,
     filename: String,
-
   },
   website: {
     type: String,
   },
-   
 });
 
 const Companies = mongoose.model('company', CompaniesSchema);

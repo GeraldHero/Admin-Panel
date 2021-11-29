@@ -1,5 +1,6 @@
-// eslint-disable-next-line import/extensions
+/* eslint-disable import/extensions */
 import Employees from '../model/Employees.js';
+import Companies from '../model/Companies.js';
 // @route   GET api/employees/
 // @desc    Get All User Data
 // @access  Private
@@ -27,6 +28,21 @@ export const getSpecificUser = async (req, res) => {
   }
 };
 
+// Check or Create company
+const checkCompany = async (company) => {
+  let result = await Companies.findOne({ name: company.cname });
+  if (!result) {
+    result = await new Companies({
+      name: company.cname,
+      email: company.cemail,
+      logo: { path: 'none', filename: 'none' },
+      website: company.website,
+    });
+    result.save();
+  }
+  return result;
+};
+
 // @route POST /api/employees
 // @desc  Create Employee
 // @access Private
@@ -41,22 +57,46 @@ export const createEmployee = async (req, res) => {
       res.status(401).json({ msg: 'Account is already registered!' });
     }
 
+    if (!company.cname || !company.cemail) {
+      return res.status(401).send({ msg: 'Company name/email is required!' });
+    }
+
+    const result = await checkCompany(company);
+
     employee = new Employees({
       firstName,
       lastName,
       email,
       phone,
       password,
-      company,
+      // eslint-disable-next-line no-underscore-dangle
+      company: result._id,
     });
 
     // Generate token in Employees model
     const token = await employee.generateAuthToken();
-
     await employee.save();
     return res.status(201).json({ token, employee });
   } catch (error) {
+    console.log(error);
     return res.status(500);
+  }
+};
+
+// @route   PUT /api/users/:id
+// @desc    delete company
+// @access  Private
+
+export const deleteCompany = async (req, res) => {
+  try {
+    const employee = await Employees.findById(req.params.id, {
+      company: '',
+    });
+
+    employee.save();
+    res.status(200).send({ msg: 'Successfully updated!' });
+  } catch (error) {
+    res.status(500).send({ msg: 'Failed to update' });
   }
 };
 
@@ -73,6 +113,7 @@ export const editEmployee = async (req, res) => {
     'email',
     'password',
     'phone',
+    'company',
   ];
   const isValidUpdates = updates.every((items) =>
     allowedUpdates.includes(items)
@@ -88,7 +129,13 @@ export const editEmployee = async (req, res) => {
       throw new Error('No user found');
     }
     // eslint-disable-next-line no-return-assign
-    updates.forEach((update) => (employee[update] = req.body[update]));
+    updates.forEach((update) => {
+      if (employee[update] === 'company') {
+        req.body[update] = checkCompany(req.body[update]);
+      }
+
+      employee[update] = req.body[update];
+    });
 
     await employee.save();
     return res.status(200).json(employee);
