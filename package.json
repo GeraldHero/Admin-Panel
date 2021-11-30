@@ -10,7 +10,8 @@
   "scripts": {
     "start": "node server.js",
     "test": "jest --runInBand --detectOpenHandles --watchAll",
-    "dev": "nodemon server.js",
+    "server": "nodemon server.js",
+    "dev": "concurrently \"npm run server\" \"npm run client \"",
     "database": "/mongodb/bin/mongod.exe --dbpath=/mongodb-data",
     "client": "npm start --prefix client",
     "clientinstall": "npm install --prefix client",
@@ -55,6 +56,7 @@
     "@babel/preset-env": "^7.16.4",
     "@types/jest": "^27.0.2",
     "babel-jest": "^27.3.1",
+    "concurrently": "^6.4.0",
     "dotenv": "^10.0.0",
     "eslint": "^8.3.0",
     "eslint-config-airbnb": "^19.0.1",

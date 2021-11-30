@@ -15,7 +15,6 @@ import {
 } from '../controllers/employeesController.js';
 
 const router = express.Router();
-
 router
   .route('/')
   .get(auth, getAllUserData)
