@@ -1,5 +1,6 @@
 import request from 'supertest';
 import app from '../app.js';
+import Companies from '../model/Companies.js';
 
 import { setupDB, dummyTest1, companyDummy1 } from './fixtures/db.js';
 
@@ -31,19 +32,46 @@ describe('Company Testing', () => {
       .expect(200);
   });
 
-
-  it('Should register a new company', async () => {
-      
-  
+  it('Should register a new company without logo', async () => {
     await request(app)
-    .post('/api/companies')
-    .set("Authorization",  `Bearer ${dummyTest1.tokens[0].token}`)
-    .field("name", "test inc")
-    .field("email", "test@inc.com")
-    .field("website", "test.com")
-    .attach('Logo', 'test/fixtures/Picture.png')
-    .expect(201)
-   
+      .post('/api/companies')
+      .set({
+        Authorization: `Bearer ${dummyTest1.tokens[0].token}`,
+      })
+      .field('name', 'geraldincorp')
+      .field('email', 'geraldincomr@g.com')
+      .set('Content-Type', 'multipart/form-data')
+      .expect(201);
+  });
 
-  })
+  it('Should failed - no name', async () => {
+    await request(app)
+      .post('/api/companies')
+      .set({
+        Authorization: `Bearer ${dummyTest1.tokens[0].token}`,
+      })
+      .field('email', 'geraldincomr@g.com')
+      .set('Content-Type', 'multipart/form-data')
+      .expect(422);
+  });
+
+  it('Should register/delete a new company with logo', async () => {
+    const testCompany = await request(app)
+      .post('/api/companies')
+      .set({
+        Authorization: `Bearer ${dummyTest1.tokens[0].token}`,
+      })
+      .field('name', 'geraldincorp')
+      .field('email', 'geraldincomr@g.com')
+      .attach('Logo', `${__dirname}/fixtures/a.png`)
+      .set('Content-Type', 'multipart/form-data')
+      .expect(201);
+
+    await request(app)
+      .delete(`/api/companies/${testCompany.body.company._id}`)
+      .set({
+        Authorization: `Bearer ${dummyTest1.tokens[0].token}`,
+      })
+      .expect(200);
+  });
 });

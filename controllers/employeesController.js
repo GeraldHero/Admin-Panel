@@ -31,7 +31,8 @@ export const getSpecificUser = async (req, res) => {
 // Check or Create company
 const checkCompany = async (company) => {
   let result = await Companies.findOne({ name: company.cname });
-  if (!result) {
+
+  if (!result || company.cemail) {
     result = await new Companies({
       name: company.cname,
       email: company.cemail,
@@ -40,7 +41,9 @@ const checkCompany = async (company) => {
 
     result.save();
   }
-  return result;
+
+  // eslint-disable-next-line no-underscore-dangle
+  return result._id;
 };
 
 // @route POST /api/employees
@@ -49,7 +52,6 @@ const checkCompany = async (company) => {
 
 export const createEmployee = async (req, res) => {
   const { firstName, lastName, email, phone, password, company } = req.body;
-
   try {
     let employee = await Employees.findOne({ email });
 
@@ -57,11 +59,11 @@ export const createEmployee = async (req, res) => {
       res.status(401).json({ msg: 'Account is already registered!' });
     }
 
-    if (!company.cname || !company.cemail) {
-      return res.status(401).send({ msg: 'Company name/email is required!' });
+    let result = null;
+    if (company) {
+      // on line 31
+      result = await checkCompany(company);
     }
-
-    const result = await checkCompany(company);
 
     employee = new Employees({
       firstName,
@@ -70,7 +72,7 @@ export const createEmployee = async (req, res) => {
       phone,
       password,
       // eslint-disable-next-line no-underscore-dangle
-      company: result._id,
+      company: result ? result._id : null,
     });
 
     // Generate token in Employees model
@@ -78,12 +80,11 @@ export const createEmployee = async (req, res) => {
     await employee.save();
     return res.status(201).json({ token, employee });
   } catch (error) {
-    console.log(error);
     return res.status(500);
   }
 };
 
-// @route   PUT /api/users/:id
+// @route   PUT /api/employees/:id
 // @desc    delete company
 // @access  Private
 
@@ -100,7 +101,7 @@ export const deleteCompany = async (req, res) => {
   }
 };
 
-// @route   PATCH /api/users/:id
+// @route   PATCH /api/employees/:id
 // @desc    Edit user
 // @access  Private
 
@@ -125,18 +126,19 @@ export const editEmployee = async (req, res) => {
     const employee = await Employees.findOne({
       _id: req.params.id,
     });
-    if (!employee) {
-      throw new Error('No user found');
+    if (!employee || !req.body.company.cname || !req.body.company.cemail) {
+      throw new Error('No user/company found');
     }
-    // eslint-disable-next-line no-return-assign
-    updates.forEach((update) => {
-      if (employee[update] === 'company') {
-        req.body[update] = checkCompany(req.body[update]);
-      }
 
+    employee.company = await checkCompany(req.body.company);
+
+    updates.forEach((update) => {
       employee[update] = req.body[update];
     });
 
+    // insert object Id only for company
+    // eslint-disable-next-line no-underscore-dangle
+    employee.company = employee.company._id;
     await employee.save();
     return res.status(200).json(employee);
   } catch (error) {

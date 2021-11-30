@@ -41,16 +41,17 @@ const deleteFile = (path) => {
 
 export const createCompanyData = async (req, res) => {
   const { name, email, website } = req.body;
-   console.log(name)
+
   if (!req.file) req.file = { path: 'none', filename: 'none' };
   const { path, filename } = req.file;
   // remove .jpg - filename.replace(/\.[^/.]+$/, '')
   try {
     let company = await Companies.findOne({ name });
-      
+
     if (company) {
       // delete upload image
-      deleteFile(path);
+      if (req.file.path !== 'none' || req.file.filename !== 'none')
+        deleteFile(path);
       return res
         .status(401)
         .json({ msg: 'Company name is already registered!' });
@@ -64,23 +65,24 @@ export const createCompanyData = async (req, res) => {
     });
     await company.save();
 
-    return res.status(201).send({ msg: 'Successfully Created' });
+    return res.status(201).send({ company });
   } catch (error) {
+    console.log(error);
     return res.status(500).send('Server Error');
   }
 };
 
 // @route PUT /api/companies/:id
-// @desc  update company 
+// @desc  update company
 // @access Private
 
-const updateCompany = async (req, res) => {
-  try {
-    const company = await Companies.findById(req.params.id)
+// const updateCompany = async (req, res) => {
+//   try {
+//     const company = await Companies.findById(req.params.id)
 
-  } catch (error) {
-  }
-}
+//   } catch (error) {
+//   }
+// }
 
 // @route DELETE /api/companies/:id
 // @desc  Delete company
@@ -89,11 +91,13 @@ const updateCompany = async (req, res) => {
 export const deleteCompany = async (req, res) => {
   try {
     const company = await Companies.findByIdAndDelete(req.params.id);
-    const { path } = company.logo;
-    if (!company) return res.status(404).send({ msg: 'Company not found!' });
 
-    // delete upload image
-    deleteFile(path);
+    if (!company) return res.status(404).send({ msg: 'Company not found!' });
+    if (company.logo) {
+      const { path } = company.logo;
+      // delete upload image
+      deleteFile(path);
+    }
 
     return res.status(200).send({ msg: 'Deleted Successfully!' });
   } catch (error) {

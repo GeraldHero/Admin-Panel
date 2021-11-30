@@ -9,13 +9,24 @@ import {
   getAllCompanies,
   getSpecificCompany,
 } from '../controllers/companiesController.js';
+import {
+  companyRequestCheckerArray,
+  validateResult,
+} from '../middleware/expressVMiddleware.js';
 
 const router = express.Router();
 
 router
   .route('/')
   .get(auth, getAllCompanies)
-  .post(auth, checkPermission, multerMiddleware, createCompanyData);
+  .post(
+    auth,
+    checkPermission,
+    multerMiddleware,
+    companyRequestCheckerArray,
+    validateResult,
+    createCompanyData
+  );
 
 router
   .route('/:id')
