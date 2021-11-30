@@ -41,11 +41,13 @@ const deleteFile = (path) => {
 
 export const createCompanyData = async (req, res) => {
   const { name, email, website } = req.body;
-
+   console.log(name)
+  if (!req.file) req.file = { path: 'none', filename: 'none' };
   const { path, filename } = req.file;
   // remove .jpg - filename.replace(/\.[^/.]+$/, '')
   try {
     let company = await Companies.findOne({ name });
+      
     if (company) {
       // delete upload image
       deleteFile(path);
@@ -61,14 +63,27 @@ export const createCompanyData = async (req, res) => {
       website,
     });
     await company.save();
+
     return res.status(201).send({ msg: 'Successfully Created' });
   } catch (error) {
     return res.status(500).send('Server Error');
   }
 };
 
-// @route DELETE /api/employees/:id
-// @desc  Delete employee acount
+// @route PUT /api/companies/:id
+// @desc  update company 
+// @access Private
+
+const updateCompany = async (req, res) => {
+  try {
+    const company = await Companies.findById(req.params.id)
+
+  } catch (error) {
+  }
+}
+
+// @route DELETE /api/companies/:id
+// @desc  Delete company
 // @access Private
 
 export const deleteCompany = async (req, res) => {
@@ -82,6 +97,7 @@ export const deleteCompany = async (req, res) => {
 
     return res.status(200).send({ msg: 'Deleted Successfully!' });
   } catch (error) {
+    console.log(error);
     return res.status(500).send('Server Error!');
   }
 };

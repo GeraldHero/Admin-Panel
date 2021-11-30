@@ -1,6 +1,5 @@
 /* eslint import/newline-after-import: "off" */
 import mongoose from 'mongoose';
-
 const CompaniesSchema = mongoose.Schema({
   name: {
     type: String,
@@ -18,7 +17,6 @@ const CompaniesSchema = mongoose.Schema({
   website: {
     type: String,
   },
-  Employees: [{ type: mongoose.Schema.Types.ObjectId, ref: 'employee' }],
 });
 
 const Companies = mongoose.model('company', CompaniesSchema);
