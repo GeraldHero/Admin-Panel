@@ -106,7 +106,7 @@ describe('Users Testing', () => {
   });
 
   it('Should Update an account', async () => {
-     await request(app)
+    await request(app)
       .patch(`/api/employees/${dummyTest1._id.toString()}`)
       .set({
         Authorization: `Bearer ${dummyTest1.tokens[0].token}`,
@@ -115,6 +115,10 @@ describe('Users Testing', () => {
         firstName: 'John',
         lastName: 'Smith',
         email: 'gh@gmail.com',
+        company: {
+          cname: 'gerald',
+          cemail: 'geral@gmail.com',
+        },
         phone: 941424123,
         password: 'gh654321',
       })
