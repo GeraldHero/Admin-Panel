@@ -1,7 +1,16 @@
+.centerDiv {
+  position: fixed;
+  top: 47%;
+  left: 47%;
+  transform: translate(-50%, -50%);
+  transform: -webkit-translate(-50%, -50%);
+  transform: -moz-translate(-50%, -50%);
+  transform: -ms-translate(-50%, -50%);
+}
 .loader {
-  position: relative;
-  width: 100px;
-  height: 100px;
+  position: fixed;
+  width: 5rem;
+  height: 5rem;
 }
 
 .loader:before,
