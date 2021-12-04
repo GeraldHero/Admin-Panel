@@ -30,7 +30,7 @@ const MyLoginForm = () => {
                 Your password must be 8-20 characters long, contain letters.
               </Form.Text>
             </Form.Group>
-            <MyButton loading="true" text="Submit" />
+            <MyButton> Submit </MyButton>
           </Form>
         </Col>
       </Row>
