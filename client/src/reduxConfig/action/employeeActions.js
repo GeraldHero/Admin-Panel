@@ -13,7 +13,6 @@ export const listEmployee = () => async (dispatch) => {
       payload: data,
     });
   } catch (error) {
-    console.log(error.response.data);
     dispatch({
       type: EMPLOYEE_LIST_FAIL,
       payload:
