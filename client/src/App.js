@@ -15,8 +15,8 @@ function App() {
       <main>
         <Suspense fallback={<MyLoader />}>
           <Routes>
-            <Route path="/" element={<MyHomePage />}></Route>
             <Route path="/login" element={<MyLogin />}></Route>
+            <Route path="/" element={<MyHomePage />}></Route>
           </Routes>
         </Suspense>
       </main>
