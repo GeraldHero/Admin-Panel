@@ -17,20 +17,29 @@ const MyLoginForm = () => {
   const { loading, error, userInfo } = userLogin;
 
   let navigate = useNavigate();
-  console.log(userInfo === []);
+
   useEffect(() => {
-    if (userInfo === []) {
-      navigate('/');
+    if (userInfo?.token) {
+      navigate('/dashboard');
     }
-  }, [navigate]);
+  }, [navigate, userInfo]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(login(email, password));
   };
+
   return (
-    <Container className="mt-5 p-5">
-      {error && <MyMessage variant="danger">{error}</MyMessage>}
+    <Container className="p-5">
+      <Row>
+        {error?.errors
+          ? error?.errors.map((item, index) => (
+              <MyMessage key={index} variant="danger">
+                {item.msg}
+              </MyMessage>
+            ))
+          : error && <MyMessage variant="danger">{error}</MyMessage>}
+      </Row>
       <Row>
         <Col>
           <div className={myStyle.backImage}></div>

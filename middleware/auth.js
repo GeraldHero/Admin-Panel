@@ -7,6 +7,7 @@ export default async function (req, res, next) {
   try {
     // Get token from header
     const token = await req.header('Authorization').replace('Bearer ', '');
+
     if (!token) throw new Error();
 
     const decoded = await jwt.verify(token, process.env.JWT_SECRET);
@@ -21,9 +22,10 @@ export default async function (req, res, next) {
     // If authorize data will inherit
     req.token = token;
     req.user = employee;
-   
+
     return next();
   } catch (error) {
+    console.log(error);
     return res.status(401).json({ msg: 'Not authorized!' });
   }
 }

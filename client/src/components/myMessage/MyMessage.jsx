@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Alert } from 'react-bootstrap';
 const MyMessage = ({ variant, children }) => {
-  return (
-    <Alert className="m-5" variant={variant}>
-      {children}
-    </Alert>
-  );
+  const [show, setShow] = useState(true);
+  if (show)
+    return (
+      <Alert variant={variant} onClose={() => setShow(false)} dismissible>
+        {children}
+      </Alert>
+    );
+  return null;
 };
 MyMessage.defaultProps = {
   variant: 'info',

@@ -19,7 +19,7 @@ export const loginUser = async (req, res) => {
     if (!isMatch) return res.status(400).json({ msg: 'Invalid Credential' });
 
     const token = await employee.generateAuthToken();
-    return res.status(200).json({ token });
+    return res.status(200).json({ user: employee, token });
   } catch (error) {
     return res.status(500).json({ msg: 'Server error!' });
   }
