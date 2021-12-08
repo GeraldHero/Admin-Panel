@@ -1,6 +1,11 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
+
 export const MyFooter = () => {
+  const { pathname } = useLocation();
+
+  if (pathname === '/dashboard') return null;
   return (
     <footer>
       <Container>
