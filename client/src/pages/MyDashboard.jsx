@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
-import { Row, Col, Container } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { Row, Col } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { Outlet, useNavigate } from 'react-router';
 import MyDashboardSidebar from '../controllers/myDashboardSidebar/MyDashboardSidebar';
 const MyDashboard = () => {
-  const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -19,11 +18,11 @@ const MyDashboard = () => {
   return (
     <div className="container-fluid">
       <Row>
-        <Col md={3}>
+        <Col md={2}>
           <MyDashboardSidebar />
         </Col>
         <Col xs={12} md={8}>
-          this is my context
+          <Outlet />
         </Col>
       </Row>
     </div>

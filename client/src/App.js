@@ -9,12 +9,25 @@ import PrivateRoute from './components/routing/PrivateRoute';
 const MyLogin = lazy(() => import('./pages/MyLogin'));
 const MyHomePage = lazy(() => import('./pages/MyHomePage'));
 const MyDashboard = lazy(() => import('./pages/MyDashboard'));
+const MyDashboardCompanies = lazy(() =>
+  import('./controllers/myDashboardCompanies/MyDashboardCompanies')
+);
+const MyDashboardEmployees = lazy(() =>
+  import('./controllers/myDashboardEmployees/MyDashboardEmployees')
+);
+const MyDashboardProfile = lazy(() =>
+  import('./controllers/myDashboardProfile/MyDashboardProfile')
+);
+const MyDashboardAdmin = lazy(() =>
+  import('./controllers/myDashboardAdmin/MyDashboardAdmin')
+);
 
 function App() {
   if (localStorage.getItem('userInfo')) {
     const item = JSON.parse(localStorage.getItem('userInfo'));
     setAuthToken(item.token);
   }
+
   return (
     <BrowserRouter>
       <MyNavbar />
@@ -22,9 +35,14 @@ function App() {
         <Suspense fallback={<MyLoader />}>
           <Routes>
             <Route path="/login" element={<MyLogin />}></Route>
-            <Route path="/" element={<MyHomePage />}></Route>
-            <Route exact path="/dashboard" element={<PrivateRoute />}>
-              <Route exact path="/dashboard" element={<MyDashboard />} />
+            <Route path="/d" element={<MyHomePage />}></Route>
+            <Route element={<PrivateRoute />}>
+              <Route path="/" element={<MyDashboard />}>
+                <Route path="/company" element={<MyDashboardCompanies />} />
+                <Route path="/employee" element={<MyDashboardEmployees />} />
+                <Route path="/profile" element={<MyDashboardProfile />} />
+                <Route path="/admin" element={<MyDashboardAdmin />} />
+              </Route>
             </Route>
           </Routes>
         </Suspense>

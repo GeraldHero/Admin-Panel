@@ -24,3 +24,25 @@
   min-width: 0;
   width: 100%;
 }
+
+/* Button */
+
+.buttonWithIcon {
+  display: inline-block;
+  width: 100%;
+
+  min-height: 2rem;
+  padding: 1rem 2rem;
+}
+.buttonWithIcon:hover {
+  background-color: #f8f9fa;
+  box-shadow: 4px 4px 14px -7px rgba(0, 0, 0, 0.27);
+  -webkit-box-shadow: 4px 4px 14px -7px rgba(0, 0, 0, 0.27);
+  -moz-box-shadow: 4px 4px 14px -7px rgba(0, 0, 0, 0.27);
+}
+.buttonWithIcon_Active {
+  color: black;
+}
+.buttonText {
+  width: max-content;
+}

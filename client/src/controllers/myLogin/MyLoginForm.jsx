@@ -20,7 +20,7 @@ const MyLoginForm = () => {
 
   useEffect(() => {
     if (userInfo?.token) {
-      navigate('/dashboard');
+      navigate('/');
     }
   }, [navigate, userInfo]);
 
