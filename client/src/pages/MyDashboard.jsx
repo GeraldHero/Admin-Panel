@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Outlet, useNavigate } from 'react-router';
 import MyDashboardSidebar from '../controllers/myDashboardSidebar/MyDashboardSidebar';
@@ -22,7 +22,9 @@ const MyDashboard = () => {
           <MyDashboardSidebar />
         </Col>
         <Col xs={12} md={8}>
-          <Outlet />
+          <Container className="m-5">
+            <Outlet />{' '}
+          </Container>
         </Col>
       </Row>
     </div>
