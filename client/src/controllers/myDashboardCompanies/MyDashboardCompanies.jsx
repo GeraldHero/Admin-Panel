@@ -2,15 +2,31 @@ import React, { useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCompaniesList } from '../../reduxConfig/action/companyActions';
+import { Avatar } from '@mui/material';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'name', headerName: 'Company name', width: 130 },
-  { field: 'email', headerName: 'Email', width: 130 },
-  { field: 'website', headerName: 'Website', width: 130 },
+  {
+    field: 'logo',
+    label: 'Logo',
+
+    renderCell: (params) => {
+      const val = params.value;
+
+      return (
+        <Avatar
+          alt={val.filename}
+          src={val.path.substr(13)}
+          variant="rectangle"
+        />
+      );
+    },
+  },
+  { field: 'name', headerName: 'Company name' },
+  { field: 'email', headerName: 'Email' },
+  { field: 'website', headerName: 'Website' },
 ];
 
-const rows = [
+let rows = [
   { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
   { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
   { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
@@ -27,7 +43,7 @@ export default function DataTable() {
 
   const companiesListState = useSelector((state) => state.companiesList);
   const { error, companies, loading } = companiesListState;
-  console.log(companies);
+  if (companies) rows = companies;
   useEffect(() => {
     dispatch(getCompaniesList());
   }, [dispatch]);
@@ -35,11 +51,11 @@ export default function DataTable() {
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
+        getRowId={(row) => row._id || row.id}
         rows={rows}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
-        checkboxSelection
       />
     </div>
   );
