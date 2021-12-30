@@ -2,7 +2,9 @@ import React, { useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCompaniesList } from '../../reduxConfig/action/companyActions';
-import { Avatar } from '@mui/material';
+import { Avatar, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 const columns = [
   {
@@ -24,6 +26,29 @@ const columns = [
   { field: 'name', headerName: 'Company name' },
   { field: 'email', headerName: 'Email' },
   { field: 'website', headerName: 'Website' },
+  {
+    field: 'action',
+    width: 130,
+    sortable: false,
+
+    renderCell: (params) => {
+      const onClickDelete = async () => {
+        return alert(JSON.stringify(params.row, null, 4));
+      };
+      const onClickEdit = async () => {};
+
+      return (
+        <>
+          <IconButton onClick={onClickDelete}>
+            <DeleteIcon color="error" />
+          </IconButton>
+          <IconButton color="primary" onClick={onClickEdit}>
+            <EditIcon />
+          </IconButton>
+        </>
+      );
+    },
+  },
 ];
 
 let rows = [
